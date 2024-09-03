@@ -1,0 +1,126 @@
+/* General styles for the form container */
+.container {
+    margin-top: 30px;
+}
+
+/* Main section styling */
+.main {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+h4 {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Input field styling */
+input.box, input[type="number"], input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Checkbox styling */
+.checkbox {
+    margin-right: 10px;
+}
+
+label {
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+/* Collateral options styling */
+.collateral-options {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+}
+
+/* Dynamic fields styling */
+.dynamic-fields {
+    margin-top: 10px;
+}
+
+/* Total quantity section styling */
+h3 span {
+    font-weight: bold;
+    color: #007bff; /* Blue color */
+}
+
+/* Submit button styling */
+input[type="submit"] {
+    background-color: #007bff; /* Blue color */
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue color */
+}
+
+/* Hidden sections */
+.hidden {
+    display: none;
+}
+
+/* Additional spacing for dynamic fields */
+.dynamic-fields label {
+    margin-top: 10px;
+    display: block;
+}
+
+/* File input field styling */
+.dynamic-fields input[type="file"] {
+    margin-bottom: 10px;
+}
+
+/* Quantity input fields styling */
+.quantityInput {
+    width: 80px;
+    display: inline-block;
+}
+
+
+.cityName {
+    text-align: center;
+    color: red;
+}
+
+.dynamic-field-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.dynamic-field-container input[type="text"],
+.dynamic-field-container input[type="number"] {
+    margin-right: 10px;
+    flex: 1;
+}
+.dynamic-field-container label {
+    margin-right: 5px;
+}

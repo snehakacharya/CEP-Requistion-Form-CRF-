@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        .dynamic-fields {
+            margin-top: 10px;
+        }
+        .dynamic-fields .set {
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            flex: 1;
+        }
+        .input-group input {
+            flex: 2;
+        }
+        .city-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .city-quantity input {
+            margin-right: 10px;
+        }
+        .file-uploads {
+            margin-top: 10px;
+        }
+        .file-uploads .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 main">
+                <form id="registrationForm" action="#" method="POST" enctype="multipart/form-data">
+                    <h2>Registration Form</h2>
+                    <input type="text" class="box" id="name" name="name" placeholder="Name" required/><br>
+                    <input type="text" class="box" id="phonenumber" name="phonenumber" placeholder="Phone Number" required/><br>
+                    <input type="text" class="box" id="brandname" name="brandname" placeholder="Brand Name" required/><br>
+                    <input type="text" class="box" id="requestid" name="requestid" placeholder="Request ID" required/><br>
+                    <input type="text" class="box" id="campaignid" name="campaignid" placeholder="Campaign ID" required/><br>
+                    
+                    <label for="collateraltype">Collateral Type:</label><br>
+                    <input type="checkbox" class="checkbox" id="signages" name="collateraltype" value="Signages">
+                    <label for="signages">Signages</label>
+                    <div id="signagesOptions" class="collateral-options" style="display:none;">
+                        <label for="signagesType">How Many Types of Signages Do You Want:</label>
+                        <input type="number" id="signagesType" name="signagesType" placeholder="1" min="1"><br>
+                        <div id="signagesDynamicFields" class="dynamic-fields"></div>
+                    </div>
+                    
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function handleSignagesCheckbox() {
+            let signagesCheckbox = document.getElementById('signages');
+            let signagesOptionsDiv = document.getElementById('signagesOptions');
+            let signagesDynamicFieldsDiv = document.getElementById('signagesDynamicFields');
+            
+            signagesCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    signagesOptionsDiv.style.display = 'block'; // Show the options fields for Signages
+                } else {
+                    signagesOptionsDiv.style.display = 'none'; // Hide the options fields for Signages
+                    signagesDynamicFieldsDiv.innerHTML = ''; // Clear any dynamic fields for Signages
+                }
+            });
+    
+            document.getElementById('signagesType').addEventListener('input', function() {
+                let quantity = parseInt(this.value) || 0;
+                signagesDynamicFieldsDiv.innerHTML = ''; // Clear any existing fields
+                
+                for (let i = 1; i <= quantity; i++) {
+                    signagesDynamicFieldsDiv.innerHTML += `
+                        <div class="set">
+                            <h4>Set ${i}</h4>
+                            <div class="city-quantity">
+                                <div class="input-group">
+                                    <label for="signagesCity${i}">Which City:</label>
+                                    <input type="text" id="signagesCity${i}" name="signagesCity${i}" placeholder="CITY">
+                                </div>
+                                <div class="input-group">
+                                    <label for="signagesQuantity${i}">Quantity:</label>
+                                    <input type="number" id="signagesQuantity${i}" name="signagesQuantity${i}" placeholder="Quantity" min="1">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="signagesDimension${i}">Signages Dimension:</label>
+                                <input type="text" id="signagesDimension${i}" name="signagesDimension${i}" placeholder="3MM, 4MM">
+                            </div>
+                            <div class="input-group">
+                                <label for="signagesFiles${i}">How many files are you going to upload:</label>
+                                <input type="number" id="signagesFiles${i}" name="signagesFiles${i}" placeholder="Number of files" min="1">
+                                <div id="signagesFilesDynamic${i}" class="file-uploads"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                document.querySelectorAll('input[id^="signagesFiles"]').forEach(input => {
+                    input.addEventListener('input', function() {
+                        let index = this.id.match(/\d+/)[0];
+                        let fileUploadsDiv = document.getElementById(`signagesFilesDynamic${index}`);
+                        let numberOfFiles = parseInt(this.value) || 0;
+
+                        fileUploadsDiv.innerHTML = ''; // Clear existing file inputs
+
+                        for (let j = 1; j <= numberOfFiles; j++) {
+                            fileUploadsDiv.innerHTML += `
+                                <div class="input-group">
+                                    <label for="signagesFile${index}_${j}">File ${j}:</label>
+                                    <input type="file" id="signagesFile${index}_${j}" name="signagesFile${index}_${j}">
+                                    <input type="number" class="file-quantity" id="signagesFileQuantity${index}_${j}" name="signagesFileQuantity${index}_${j}" placeholder="Quantity" min="1">
+                                </div>
+                            `;
+                        }
+                    });
+                });
+            });
+        }
+    
+        function submitForm(event) {
+            event.preventDefault();
+            let form = document.getElementById('registrationForm');
+            let formData = new FormData(form);
+            
+            let jsonFormData = {};
+            formData.forEach((value, key) => {
+                jsonFormData[key] = value;
+            });
+            
+            fetch('https://script.google.com/a/macros/mygate.in/s/AKfycbzJQmVytdg7m_eV_qrcOJlfHpP1izHGg66PFT-wjq0hta7NMvqAJhUhXLxRyT3ZSYQ/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonFormData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Form submitted successfully!');
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the form.');
+            });
+        }
+    
+        document.getElementById('registrationForm').addEventListener('submit', submitForm);
+    
+        handleSignagesCheckbox();
+    </script>
+</body>
+</html>
